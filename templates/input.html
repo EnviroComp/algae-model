@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container center">
+	<h3>{{sample.name}}</h3>
+	<h5>Data Input</h5>
+  <div class="row">
+    <form class="col s12" action={{url_for('input',num=sample.id)}} method="post">
+			<div class="row">
+				<div class="input-field col s12">
+					<input name="date" type="text" id="datepicker" class="validate">
+					<label for="date">Date</label>
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s4">
+					<input name="po" id="po" type="number" step="any" class="validate">
+					<label for="po">[PO4]</label>
+				</div>
+				<div class="input-field col s4">
+					<input name="nh" id="nh" type="number" step="any" class="validate">
+					<label for="nh">[NH4]</label>
+				</div>
+				<div class="input-field col s4">
+					<input name="no" id="no" type="number" step="any" class="validate">
+					<label for="no">[NO3]</label>
+				</div>
+			</div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input name="temp" id="temp" type="number" step="any" class="validate">
+          <label for="temp">Temperature</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="solar" id="solar" type="number" step="any" class="validate">
+          <label for="solar">Solar</label>
+        </div>
+      </div>
+			<div class="row">
+				<div class="input-field col s6">
+					<input name="depth" id="depth" type="number" step="any" class="validate">
+					<label for="depth">Depth</label>
+				</div>
+				<div class="input-field col s6">
+					<input name="sediment" id="sediment" type="number" step="any" class="validate">
+					<label for="sediment">Sediment</label>
+				</div>
+			</div>
+			<div class="row">
+				<button class="btn waves-effect waves-light red" type="submit">Submit</button>
+			</div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+var picker = new Pikaday(
+    {
+        field: document.getElementById('datepicker'),
+				format: 'MM-DD-YYYY',
+        minDate: new Date(2000, 1, 1),
+        maxDate: new Date(2020, 12, 31),
+        yearRange: [2000,2020]
+    });
+{% endblock %}

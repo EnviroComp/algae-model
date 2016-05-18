@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/css/pikaday.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="se-pre-con"></div>
+    <ul id="dropdown1" class="dropdown-content">
+      {% for lake in lakes %}
+        <li><a href="{{ url_for('lakes', num=lake.id) }}">{{lake.name}}</a></li>
+      {% endfor %}
+      <li class="divider"></li>
+      <li><a class="center" href="{{ url_for('new_lake') }}">+</a></li>
+    </ul>
+    <ul id="dropdown2" class="dropdown-content">
+      {% for lake in lakes %}
+        <li><a href="{{ url_for('lakes', num=lake.id) }}">{{lake.name}}</a></li>
+      {% endfor %}
+      <li class="divider"></li>
+      <li><a class="center" href="{{ url_for('new_lake') }}">+</a></li>
+    </ul>
+    <nav class="green" role="navigation">
+      <div class="nav-wrapper container">
+        <a id="logo-container" href="#" class="brand-logo">{{sample.name}}</a>
+        <ul class="right hide-on-med-and-down">
+          {% if sample %}
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('input', num=sample.id) }}">Input</a></li>
+            <li><a href="{{ url_for('config', num=sample.id) }}">Config</a></li>
+          {% endif %}
+          <li><a class="dropdown-button" href="#!" data-activates="dropdown1" data-beloworigin="true">Switch Lakes<i class="material-icons right">arrow_drop_down</i></a></li>
+        </ul>
+        <ul id="nav-mobile" class="side-nav">
+          {% if sample %}
+            <li><a href="{{ url_for('index') }}">Home</a></li>
+            <li><a href="{{ url_for('input', num=sample.id) }}">Input</a></li>
+            <li><a href="{{ url_for('config', num=sample.id) }}">Config</a></li>
+          {% endif %}
+          <li class="divider"></li>
+          {% for lake in lakes %}
+            <li><a class="blue-text" href="{{ url_for('lakes', num=lake.id) }}">{{lake.name}}</a></li>
+          {% endfor %}
+        </ul>
+        <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+      </div>
+    </nav>
+    <div class="container">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.4.0/pikaday.min.js"></script>
+    <script src="http://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script>
+    $(document).ready(function() {
+
+
+
+
+
+{% if indexx %}
+
+
+
+
+
+    dates = []
+
+
+    plot=[]
+    var oTable = document.getElementsByClassName('sortable')[0];
+    var rowLength = oTable.rows.length;
+    var oCells, date, concentration, x, y, z;
+    for (i = 0; i < rowLength; i++){
+    oCells = oTable.rows.item(i).cells;
+    date = oCells.item(0).innerHTML;
+    concentration = oCells.item(3).innerHTML;
+    y = new Date(date);
+    x = Date.UTC(y.getUTCFullYear(), y.getUTCMonth(), y.getUTCDate())
+    z = concentration;
+    dates.push(x)
+    plot.push([x, parseFloat(z)]);
+    }
+    dates.shift();
+    plot.shift();
+    $(function() {
+    $('#container1').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Chlorophyll Concentration'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Concentration (mg/L)'
+    },
+    min: 0
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f} mg/L'
+    },
+    series: [{
+    name: 'Calculated Concentration',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: plot
+    }]
+    });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var death=[]
+    var growth=[]
+    var oTable = document.getElementsByClassName('sortable')[0];
+    var rowLength = oTable.rows.length;
+    var oCells, date, concentration, x, y, z;
+    for (i = 0; i < rowLength; i++){
+    oCells = oTable.rows.item(i).cells;
+    date = oCells.item(0).innerHTML;
+    y = new Date(date);
+    x = Date.UTC(y.getUTCFullYear(), y.getUTCMonth(), y.getUTCDate())
+    z = oCells.item(2).innerHTML;
+    a = oCells.item(1).innerHTML;
+    growth.push([x, parseFloat(z)]);
+    death.push([x, parseFloat(a)]);
+    }
+    growth.shift()
+    death.shift()
+    $(function() {
+    $('#container2').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Growth & Death Rate'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Concentration (mg/L)'
+    },
+    min: 0
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f} mg/L'
+    },
+    series: [{
+    name: 'Growth Rate',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: growth
+    },{
+    name: 'Death Rate',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: death
+    }]
+    });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var temperature=[]
+    {% block temperature %}{% endblock %}
+    temp = [];
+    for (i=0; i<dates.length; i++){
+      temp.push([dates[i],temperature[i]]);
+    }
+    $(function() {
+    $('#container3').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Water Temperature'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Temperature (°C)'
+    },
+    min: 0
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f} °C'
+    },
+    series: [{
+    name: 'Water Temperature',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: temp
+    }]
+    });
+    });
+
+
+
+    var sediment=[]
+    {% block sediment %}{% endblock %}
+    sed = [];
+    for (i=0; i<dates.length; i++){
+      sed.push([dates[i],sediment[i]]);
+    }
+    $(function() {
+    $('#container4').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Sediment Concentration'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Concentration(mg/L)'
+    },
+    min: 0
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f} mg/L'
+    },
+    series: [{
+    name: 'Sediment Concentration',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: sed
+    }]
+    });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var depth=[]
+    {% block depth %}{% endblock %}
+    dep = [];
+    for (i=0; i<dates.length; i++){
+      dep.push([dates[i],depth[i]]);
+    }
+    $(function() {
+    $('#container5').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Water Depth'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Concentration(mg/L)'
+    },
+    min: 1.5
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f} mg/L'
+    },
+    series: [{
+    name: 'Depth',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: dep
+    }]
+    });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+    var intensity=[]
+    {% block intensity %}{% endblock %}
+    solar = [];
+    for (i=0; i<dates.length; i++){
+      solar.push([dates[i],intensity[i]]);
+    }
+    $(function() {
+    $('#container6').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Solar Intensity'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Solar Intensity(Ly/day)'
+    },
+    min: 0
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f} Ly/day'
+    },
+    series: [{
+    name: 'Solar Intensity',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: solar
+    }]
+    });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var limiting=[]
+    var fn = []
+    var ft = []
+    var fi = []
+    {% block limiting %}{% endblock %}
+    for (i=0; i<dates.length; i++){
+      fn.push([dates[i],limiting[i][0]]);
+      ft.push([dates[i],limiting[i][1]]);
+      fi.push([dates[i],limiting[i][2]]);
+    }
+    $(function() {
+    $('#container7').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Limiting Factors'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Values of Limiting Factors'
+    },
+    min: 0,
+    max: 1
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f}'
+    },
+    series: [{
+    name: 'Fn',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: fn
+    },{
+    name: 'Ft',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: ft
+    },{
+    name: 'Fi',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: fi
+    }]
+    });
+    });
+
+
+
+
+
+
+
+
+
+
+    var nutrient=[]
+    var po = []
+    var nh = []
+    var no = []
+    {% block nutrient %}{% endblock %}
+    for (i=0; i<dates.length; i++){
+      po.push([dates[i],nutrient[i][0]]);
+      nh.push([dates[i],nutrient[i][1]]);
+      no.push([dates[i],nutrient[i][2]]);
+    }
+    $(function() {
+    $('#container8').highcharts({
+    credits: {
+    enabled: false
+    },
+    title: {
+    text: 'Nutrient Concentration'
+    },
+    subtitle: {
+    text: 'Lake Beasley'
+    },
+    xAxis: {
+    type: 'datetime',
+    dateTimeLabelFormats: {
+    month: '%e. %b',
+    year: '%b'
+    },
+    title: {
+    text: 'Date'
+    }
+    },
+    yAxis: {
+    title: {
+    text: 'Concentration(mg/L)'
+    },
+    min: 0,
+    max: 0.3
+    },
+    tooltip: {
+    headerFormat: '<b>{series.name}</b><br>',
+    pointFormat: '{point.x:%e. %b}: {point.y:.2f} mg/L'
+    },
+    series: [{
+    name: 'PO4',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: po
+    },{
+    name: 'NH4',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: nh
+    },{
+    name: 'NO3',
+    marker: {
+    enabled: false,
+    radius: 3,
+    },
+    data: no
+    }]
+    });
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    })
+    $(window).load(function(){
+    $(".button-collapse").sideNav()
+    {% if sample %}
+      {% block scripts %}
+      {% endblock %}
+    {% endif %}
+    });
+    </script>
+    <script>document.body.innerHTML = document.body.innerHTML.replace( / 00:00:00/g, "");</script>
+  </body>
+</html>

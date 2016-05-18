@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="container center">
+    {% if sample %}
+      <h1>{{sample.name}}</h1>
+    {% endif %}
+    {% if data %}
+      <div id="container8" graph="nutrient" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <div id="container3" graph="temp" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <div id="container6" graph="solar" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <div id="container7" graph="limiting" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <div id="container4" graph="sediment" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <div id="container5" graph="water" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <div id="container2" graph="growth" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <div id="container1" graph="conc" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+      <table class="sortable">
+        <thead>
+          <tr>
+            <th data-field="date" id="date">Date</th>
+            <th data-field="death">Death Rate</th>
+            <th data-field="growth">Growth Rate</th>
+            <th data-field="concentration">Concentration</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for en in data %}
+            <tr>
+              <td>{{en.date}}</td>
+              <td>{{en.death}}</td>
+              <td>{{en.growth}}</td>
+              <td>{{en.concentration}}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+{% endblock %}
+{% block scripts %}
+  sorttable.innerSortFunction.apply(document.getElementById('date'),[]);
+{% endblock %}
+{% block temperature %}
+{% for i in temp %}
+  temperature.push(parseFloat({{i}}));
+{% endfor %}
+{% endblock %}
+
+{% block sediment %}
+{% for i in sediment %}
+  sediment.push(parseFloat({{i}}));
+{% endfor %}
+{% endblock %}
+
+
+{% block depth %}
+{% for i in depth %}
+  depth.push(parseFloat({{i}}));
+{% endfor %}
+{% endblock %}
+
+
+
+
+{% block intensity %}
+{% for i in intensity %}
+  intensity.push(parseFloat({{i}}));
+{% endfor %}
+{% endblock %}
+
+
+{% block limiting %}
+{% for i in limiting %}
+  limiting.push([parseFloat({{i[0]}}),parseFloat({{i[1]}}),parseFloat({{i[2]}})])
+{% endfor %}
+{% endblock %}
+
+
+
+{% block nutrient %}
+{% for i in nutrient %}
+  nutrient.push([parseFloat({{i[0]}}),parseFloat({{i[1]}}),parseFloat({{i[2]}})])
+{% endfor %}
+{% endblock %}

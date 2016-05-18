@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container center">
+	<h3>{{sample.name}}</h3>
+	<h5>Configuration</h5>
+  <div class="row">
+    <form class="col s12" action={{url_for('config',num=sample.id)}} method="post">
+			<div class="row">
+				{% if not defaults.cii > 0 %}
+				<div class="input-field col s6">
+					<input name="cii" id="cii" type="number" step="any" class="validate">
+					<label for="cii">Initial Concentration</label>
+				</div>
+				{% else %}
+				<div class="input-field col s6">
+					<input disabled id="cii" type="number" step="any" class="validate" value="{{defaults.cii}}">
+					<label for="cii">Initial Concentration</label>
+				</div>
+				{% endif %}
+				<div class="input-field col s6">
+					<input name="cj" id="cj" type="number" step="any" class="validate" value={{defaults.cj}}>
+					<label for="cj">Lower bound on Concentration</label>
+				</div>
+			</div>
+      <div class="row">
+        <div class="input-field col s6">
+          <input name="kmn" id="kmn" type="number" step="any" class="validate" value={{defaults.kmn}}>
+          <label for="kmn">Kmn</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="kmp" id="kmp" type="number" step="any" class="validate" value={{defaults.kmp}}>
+          <label for="kmp">Kmp</label>
+        </div>
+      </div>
+			<div class="row">
+        <div class="input-field col s6">
+          <input name="ktga" id="ktga" type="number" step="any" class="validate" value={{defaults.ktga}}>
+          <label for="ktga">Ktg1</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="ktgb" id="ktgb" type="number" step="any" class="validate" value={{defaults.ktgb}}>
+          <label for="ktgb">Ktg2</label>
+        </div>
+      </div>
+			<div class="row">
+        <div class="input-field col s6">
+          <input name="tm" id="tm" type="number" step="any" class="validate" value={{defaults.tm}}>
+          <label for="tm">Tm</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="im" id="im" type="number" step="any" class="validate" value={{defaults.im}}>
+          <label for="im">Im</label>
+        </div>
+      </div>
+			<div class="row">
+        <div class="input-field col s6">
+          <input name="kpr" id="kpr" type="number" step="any" class="validate" value={{defaults.kpr}}>
+          <label for="kpr">Kpr</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="kpd" id="kpd" type="number" step="any" class="validate" value={{defaults.kpd}}>
+          <label for="kpd">Kpd</label>
+        </div>
+      </div>
+			<div class="row">
+        <div class="input-field col s6">
+          <input name="kda" id="kda" type="number" step="any" class="validate" value={{defaults.kda}}>
+          <label for="kda">Kd1</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="kdb" id="kdb" type="number" step="any" class="validate" value={{defaults.kdb}}>
+          <label for="kdb">Kd2</label>
+        </div>
+      </div>
+			<div class="row">
+        <div class="input-field col s6">
+          <input name="fday" id="fday" type="number" step="any" class="validate" value={{defaults.fday}}>
+          <label for="fday">Fday</label>
+        </div>
+        <div class="input-field col s6">
+          <input name="pmx" id="pmx" type="number" step="any" class="validate" value={{defaults.pmx}}>
+          <label for="pmx">Pmx</label>
+        </div>
+      </div>
+			<div class="row">
+				<button class="btn waves-effect waves-light red" type="submit">Submit</button>
+			</div>
+    </form>
+  </div>
+</div>
+{% endblock %}
